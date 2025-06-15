@@ -18,6 +18,12 @@ from Agents.TC001.TC001 import TC_001
 from Agents.TC002.TC002 import TC_002
 from Agents.TC003.TC003 import TC_003
 from Agents.TC004.TC004 import TC_004
+from Agents.TC006.TC006 import TC_006
+from Agents.TC007.TC007 import TC_007
+from Agents.TC008.TC008 import TC_008
+from Agents.TC009.TC009 import TC_009
+from Agents.TC010.TC010 import TC_010
+from Agents.TC011.TC011 import TC_011
 
 # Initialize the WebDriver
 driver = webdriver.Chrome()
@@ -56,6 +62,12 @@ try:
     TC_002(driver)
     TC_003(driver)
     TC_004(driver)
+    TC_006(driver)
+    TC_007(driver)
+    TC_008(driver)
+    TC_009(driver)
+    TC_010(driver)
+    TC_011(driver)
 
 finally:
     # Close the browser
