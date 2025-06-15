@@ -29,6 +29,8 @@ def Add_First_Message_Custom_Variable(driver, variable):
     add_variable_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, "//button[normalize-space()='Add Variable']"))
     )
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", add_variable_button)
+    time.sleep(0.5)
     add_variable_button.click()
 
     # Select the "system__agent_id" from the dropdown

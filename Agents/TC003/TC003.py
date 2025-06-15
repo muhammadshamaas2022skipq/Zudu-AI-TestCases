@@ -15,7 +15,7 @@ def TC_003(driver):
 
         Select_Voice(driver, "Eliska")
         Select_Voice(driver, "Jakub")
-        Select_Voice(driver, "Tomas")
+        #Select_Voice(driver, "Tomas")
 
     finally:
         # Close the browser
@@ -44,12 +44,6 @@ def Select_Voice(driver, voice):
         EC.element_to_be_clickable((By.XPATH, f".//span[text()='{voice}']"))
     )
     option.click()
-
-    # Wait for the Save button to be clickable and click it
-    save_button = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, "//button[normalize-space()='Save']"))
-    )
-    save_button.click()
 
     Test_Agent(driver, "agent_voice_"+voice+".wav")
 

@@ -14,7 +14,7 @@ def TC_007(driver):
     try:
         print("Executing Test Case TC_007: Add System Variable to First Message ")
 
-        Add_First_Message_System_Variable(driver, "system__agent_id")
+        Add_First_Message_System_Variable(driver, "system__call_sid")
 
     finally:
         # Close the browser
@@ -29,6 +29,8 @@ def Add_First_Message_System_Variable(driver, variable):
     add_variable_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, "//button[normalize-space()='Add Variable']"))
     )
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", add_variable_button)
+    time.sleep(0.5)  # Give time for any overlays to disappear
     add_variable_button.click()
 
     # Select the "system__agent_id" from the dropdown

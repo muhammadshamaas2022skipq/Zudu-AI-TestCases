@@ -14,7 +14,7 @@ def TC_010(driver):
     try:
         print("Executing Test Case TC_010: Add System Variable to System Prompt ")
 
-        Add_System_Prompt_System_Variable(driver, "system__agent_id")
+        Add_System_Prompt_System_Variable(driver, "system__call_sid")
 
     finally:
         # Close the browser

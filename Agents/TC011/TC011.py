@@ -12,15 +12,15 @@ from scipy.io.wavfile import write
 
 def TC_011(driver):
     try:
-        print("Executing Test Case TC_011: Add System Variable to System Prompt ")
+        print("Executing Test Case TC_011: Add New Variable to System Prompt ")
 
-        Add_System_Prompt_System_Variable(driver, "new_variable")
+        Add_System_Prompt_New_Variable(driver, "new_variable")
 
     finally:
         # Close the browser
         print("Test case TC_011 executed successfully!")
 
-def Add_System_Prompt_System_Variable(driver, variable):
+def Add_System_Prompt_New_Variable(driver, variable):
     # Locate the textarea for the System Prompt
     textarea = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "systemPrompt"))
