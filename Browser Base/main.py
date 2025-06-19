@@ -1,0 +1,54 @@
+from browserbase import Browserbase
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.remote.remote_connection import RemoteConnection
+import time
+from test_signin import TestSignin
+from test_agentspage import TestAgentspage
+from selenium.webdriver.chrome.options import Options
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+# Setup Browserbase
+bb = Browserbase(api_key=os.getenv("API_KEY"))
+session = bb.sessions.create(project_id=os.getenv("PROJECT_ID"))
+
+# Custom connection with auth
+class AuthConnection(RemoteConnection):
+    def __init__(self, remote_url, signing_key):
+        super().__init__(remote_url, keep_alive=True)
+        self._signing_key = signing_key
+
+    def get_remote_connection_headers(self, parsed_url, keep_alive=False):
+        headers = super().get_remote_connection_headers(parsed_url, keep_alive)
+        headers.update({"x-bb-signing-key": self._signing_key})
+        return headers
+
+conn = AuthConnection(session.selenium_remote_url, session.signing_key)
+
+# Set Chrome options
+chrome_options = Options()
+# Add any required options here, e.g., chrome_options.add_argument("--headless")
+
+# Start browser
+driver = webdriver.Remote(command_executor=conn, options=chrome_options)
+
+# Create an instance of TestSignin and call test_signin, passing driver as an argument
+test_signin_instance = TestSignin(driver)
+test_signin_instance.test_signin()
+time.sleep(3)
+
+# Create an instance of TestSignin and call test_signin, passing driver as an argument
+test_agents_instance = TestAgentspage(driver)
+test_agents_instance.test_agentspage()
+time.sleep(3)
+
+# Done
+print("Title after login:", driver.title)
+
+
+
+driver.quit()
