@@ -25,6 +25,16 @@ def Add_Knowledge_Base_Document(driver, document):
     add_document_button = WebDriverWait(driver, 15).until(
         EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Add document')]"))
     )
+
+    # Wait for overlay to disappear
+    WebDriverWait(driver, 10).until(
+        EC.invisibility_of_element_located((By.CSS_SELECTOR, "div.w-full.flex.items-center.justify-between.shadow-lg"))
+    )
+
+    # Scroll into view (optional)
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", add_document_button)
+
+    # Click the button
     add_document_button.click()
 
     # Click the "Test Knowledge Base" button in the popover

@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import sounddevice as sd
 from scipy.io.wavfile import write
+from selenium.webdriver.common.action_chains import ActionChains
 
 def TC_002(driver):
     try:
@@ -41,10 +42,13 @@ def Select_Language(driver, language):
         EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'absolute') and contains(@class, 'bg-white')]"))
     )
 
-    # Wait for the language option to be present and clickable, then click it
-    option = WebDriverWait(dropdown_menu, 10).until(
-        EC.element_to_be_clickable((By.XPATH, f".//span[text()='{language}']"))
-    )
+    # Scroll the dropdown menu to the bottom to load all options
+    driver.execute_script("arguments[0].scrollTop = arguments[0].scrollHeight", dropdown_menu)
+    time.sleep(1)  # Wait for options to load
+
+    # Try finding the option again
+    option = dropdown_menu.find_element(By.XPATH, f".//span[text()='{language}']")
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", option)
     option.click()
 
     # Wait for the Save button to be clickable
@@ -63,6 +67,7 @@ def Select_Language(driver, language):
     save_button.click()
 
     Test_Agent(driver, "agent_voice_"+language+".wav")
+
 
 def Test_Agent(driver, filename):
     # Interact with the "Test AI agent" button

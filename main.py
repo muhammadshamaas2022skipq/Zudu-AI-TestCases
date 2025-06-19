@@ -26,11 +26,18 @@ from Agents.TC010.TC010 import TC_010
 from Agents.TC011.TC011 import TC_011
 from Agents.TC012.TC012 import TC_012
 from Agents.TC013.TC013 import TC_013
+from Agents.TC015.TC015 import TC_015
 from Agents.TC016.TC016 import TC_016
 from Agents.TC017.TC017 import TC_017
 from Agents.TC021.TC021 import TC_021
 from Agents.TC022.TC022 import TC_022
 from Agents.TC024.TC024 import TC_024
+
+from CallHistory.TCCH001.TCCH001 import TCCH001
+from CallHistory.TCCH009.TCCH009 import TCCH009
+
+from BatchCall.TCBC001.TCBC001 import TCBC001
+from BatchCall.TCBC009.TCBC009 import TCBC009
 
 # Initialize the WebDriver
 driver = webdriver.Chrome()
@@ -39,6 +46,7 @@ try:
     # Open the URL
     driver.get("https://app.uat.zudu.ai")
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
+    
     # Set zoom to 50%
     #driver.execute_script("document.body.style.zoom='50%'")
 
@@ -68,22 +76,29 @@ try:
 
     # Run the test cases
     TC_001(driver)
-    TC_002(driver)
-    TC_003(driver)
-    TC_004(driver)
-    TC_006(driver)
-    TC_007(driver)
-    TC_008(driver)
-    TC_009(driver)
-    TC_010(driver)
-    TC_011(driver)
-    TC_012(driver)
-    TC_013(driver)
-    TC_016(driver)
-    TC_017(driver)
-    TC_021(driver)
-    TC_022(driver)
-    TC_024(driver)
+    #TC_002(driver)
+    #TC_003(driver)
+    #TC_004(driver)
+    #TC_006(driver)
+    #TC_007(driver)
+    #TC_008(driver)
+    #TC_009(driver)
+    #TC_010(driver)
+    #TC_011(driver)
+    #TC_012(driver)
+    #TC_013(driver)
+    #TC_015(driver)
+    #TC_016(driver)
+    #TC_017(driver)
+    #TC_021(driver)
+    #TC_022(driver)
+    #TC_024(driver)
+
+    TCCH001(driver)
+    #TCCH009(driver)
+    
+    TCBC001(driver)
+    #TCBC009(driver)
 
 finally:
     # Close the browser

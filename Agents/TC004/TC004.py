@@ -16,8 +16,8 @@ def TC_004(driver):
         print("Executing Test Case TC_004: Change Agent Voice Speed")
 
         Select_Speed(driver, "0.5")
-        Select_Speed(driver, "1.0")
         Select_Speed(driver, "2.0")
+        Select_Speed(driver, "1.0")
 
     finally:
         # Close the browser

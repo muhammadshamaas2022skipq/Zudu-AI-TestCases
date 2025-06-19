@@ -15,7 +15,7 @@ def TC_003(driver):
 
         Select_Voice(driver, "Eliska")
         Select_Voice(driver, "Jakub")
-        #Select_Voice(driver, "Tomas")
+        Select_Voice(driver, "Tomas")
 
     finally:
         # Close the browser
@@ -72,3 +72,61 @@ def Test_Agent(driver, filename):
         EC.element_to_be_clickable((By.XPATH, "//button[.//span[text()='End call']]"))
     )
     end_call_button.click()
+
+def Select_Language(driver, language):
+    # Wait for the "Agent Language" dropdown button to be clickable
+    agent_language_btn = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//p[text()='Agent Language']/following-sibling::div//button"))
+    )
+
+    print("Changing Agent Language to " + language)
+
+    # Click the SVG chevron (dropdown icon) inside the button
+    chevron_svg = agent_language_btn.find_element(By.TAG_NAME, "svg")
+    chevron_svg.click()
+
+    # Wait for the dropdown options to be visible
+    dropdown_menu = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.XPATH, "//div[contains(@class, 'absolute') and contains(@class, 'bg-white')]"))
+    )
+
+    # Try to find and click the language option, scrolling if necessary
+    found = False
+    max_scrolls = 20
+    last_scroll_top = -1
+    for _ in range(max_scrolls):
+        try:
+            option = dropdown_menu.find_element(By.XPATH, f".//span[normalize-space(text())='{language}']")
+            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", option)
+            option.click()
+            found = True
+            break
+        except Exception:
+            # Scroll down a bit more
+            current_scroll_top = driver.execute_script("return arguments[0].scrollTop;", dropdown_menu)
+            driver.execute_script("arguments[0].scrollTop = arguments[0].scrollTop + 50;", dropdown_menu)
+            time.sleep(0.2)
+            # If we can't scroll further, break to avoid infinite loop
+            if current_scroll_top == last_scroll_top:
+                break
+            last_scroll_top = current_scroll_top
+
+    if not found:
+        raise Exception(f"Could not find language option: {language}")
+
+    # Wait for the Save button to be clickable
+    save_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, "//button[normalize-space()='Save']"))
+    )
+
+    # Wait for any toast/overlay to disappear before clicking Save
+    try:
+        WebDriverWait(driver, 5).until(
+            EC.invisibility_of_element_located((By.XPATH, "//li[@data-sonner-toast and @data-visible='true']"))
+        )
+    except:
+        pass  # If no toast is present, continue
+
+    save_button.click()
+
+    Test_Agent(driver, "agent_voice_" + language + ".wav")
