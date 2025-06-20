@@ -13,6 +13,8 @@ from test_agentspage import TestAgentspage
 from test_callhistorypage import TestCallhistorypage
 from test_batchcallpage import TestBatchcallpage
 from test_knowledgebasepage import TestKnowledgebasepage
+from test_phonenumberspage import TestPhonenumberspage
+from test_settings import TestSettings
 
 load_dotenv()
 
@@ -31,24 +33,34 @@ test_signin_instance = TestSignin(driver)
 test_signin_instance.test_signin()
 time.sleep(3)
 
-# Create an instance of TestAgentspage and call test_agentspage, passing driver as an argument
-#test_agents_instance = TestAgentspage(driver)
-#test_agents_instance.test_agentspage()
-#time.sleep(3)
+# Create an instance of TestAgentspage, passing driver as an argument
+test_agents_instance = TestAgentspage(driver)
+test_agents_instance.test_agentspage()
+time.sleep(3)
 
-# Create an instance of TestCallhistorypage and call test_signin, passing driver as an argument
-#test_call_history_instance = TestCallhistorypage(driver)
-#test_call_history_instance.test_callhistorypage()
-#time.sleep(3)
+# Create an instance of TestCallhistorypage, passing driver as an argument
+test_call_history_instance = TestCallhistorypage(driver)
+test_call_history_instance.test_callhistorypage()
+time.sleep(3)
 
-# Create an instance of TestCallhistorypage and call test_signin, passing driver as an argument
-#test_batch_call_instance = TestBatchcallpage(driver)
-#test_batch_call_instance.test_batchcallpage()
-#time.sleep(3)
+# Create an instance of TestCallhistorypage, passing driver as an argument
+test_batch_call_instance = TestBatchcallpage(driver)
+test_batch_call_instance.test_batchcallpage()
+time.sleep(3)
 
-# Create an instance of TestCallhistorypage and call test_signin, passing driver as an argument
+# Create an instance of TestCallhistorypage, passing driver as an argument
 test_knowledge_base_instance = TestKnowledgebasepage(driver)
 test_knowledge_base_instance.test_knowledgebasepage()
+time.sleep(3)
+
+# Create an instance of TestPhonenumberspage, passing driver as an argument
+test_phone_numbers_instance = TestPhonenumberspage(driver)
+test_phone_numbers_instance.test_phonenumberspage()
+time.sleep(3)
+
+# Create an instance of TestPhonenumberspage, passing driver as an argument
+test_settings_instance = TestSettings(driver)
+test_settings_instance.test_settingspage()
 time.sleep(3)
 
 # Done

@@ -3433,6 +3433,18 @@
         ["xpath=//td/div", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "fb31a76d-0815-42c6-80c7-4811eb8a577a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.hover\\3A bg-gray-800",
+      "targets": [
+        ["css=.hover\\3A bg-gray-800", "css:finder"],
+        ["xpath=//div[@id='radix-«rf»']/div[3]/div[3]/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Send Test Call')]", "xpath:innerText"]
+      ],
+      "value": ""
     }]
   }, {
     "id": "9a8a300d-689e-410a-8d5b-c3c37305cf3d",
@@ -3571,10 +3583,11 @@
       "id": "7b225b73-5a74-436a-a45d-80e2d10406b5",
       "comment": "",
       "command": "click",
-      "target": "css=.mb-6",
+      "target": "css=.disabled\\3Apointer-events-none:nth-child(2)",
       "targets": [
-        ["css=.mb-6", "css:finder"],
-        ["xpath=//div[2]/div[2]/div", "xpath:position"]
+        ["css=.disabled\\3Apointer-events-none:nth-child(2)", "css:finder"],
+        ["xpath=//button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'URL Source')]", "xpath:innerText"]
       ],
       "value": ""
     }]

@@ -2,7 +2,6 @@
 import pytest
 import time
 import json
-import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -12,7 +11,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support import expected_conditions as EC
 
-class TestKnowledgebasepage():
+class TestSettings():
   def __init__(self, driver):
     self.driver = driver
     self.vars = {}
@@ -23,7 +22,7 @@ class TestKnowledgebasepage():
   def teardown_method(self, method):
     pass
   
-  def test_knowledgebasepage(self):
+  def test_settingspage(self):
     self.driver.get("https://app.uat.zudu.ai/")
     self.driver.set_window_size(1300, 736)
     self.driver.execute_script("document.body.style.zoom='0.5'")
@@ -62,51 +61,21 @@ class TestKnowledgebasepage():
           input_elem.send_keys(keys)
       except Exception as e:
           print(f"Could not find or interact with input: {e}")
-  
-    click_element(By.CSS_SELECTOR, "li:nth-child(5) span")
 
-    # Search
-    click_element(By.CSS_SELECTOR, ".file\\3Atext-foreground")
-    send_keys(By.CSS_SELECTOR, ".file\\3Atext-foreground","Knowledge base")
+    self.driver.get("https://app.uat.zudu.ai/")
+    self.driver.set_window_size(1300, 736)
+    self.driver.execute_script("document.body.style.zoom='0.5'")
 
-    # Create knowledge base
-    click_element(By.XPATH, "//button[normalize-space()='Create Knowledge Base']")
+    # Click settings
+    self.driver.find_element(By.XPATH, "//button[@id=\'radix-«R1srjb»\']/div[2]/span").click()
+    click_element(By.CSS_SELECTOR, ".focus\\3A bg-accent:nth-child(3)")
 
-    time.sleep(5)
-
-    # Name
-    click_element(By.ID, "kb-name")
-    send_keys(By.ID, "kb-name", "Test KB")
-
-    # Document
-    # Upload CSV file using the file input
-    csv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "recipients-template.csv"))
-    file_input = WebDriverWait(self.driver, 10).until(
-      EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']"))
-    )
-    self.driver.execute_script("arguments[0].classList.remove('hidden');", file_input)
-    file_input.send_keys(csv_path)
-    time.sleep(2)
-
-    # Text
-    click_element(By.CSS_SELECTOR, ".bg-gray-50:nth-child(2)")
-    click_element(By.ID, "text-title")
-    send_keys(By.ID, "text-title", "Test")
-    click_element(By.ID, "text-content")
-    send_keys(By.ID, "text-content", "Test content")
-    click_element(By.CSS_SELECTOR, ".inline-flex:nth-child(3)")
-
-    # URL
-    click_element(By.CSS_SELECTOR, ".bg-gray-50:nth-child(3)")    
-    click_element(By.ID, "url-input")
-    send_keys(By.ID, "url-input", "https://www.abc.com")
-    click_element(By.CSS_SELECTOR, ".bg-background:nth-child(2)")
-
-    # Save
-    click_element(By.CSS_SELECTOR, ".flex-col-reverse > .bg-black")
-    click_element(By.XPATH, "//td[normalize-space()='Test knowledge base']")
-
-    # Preview
-    click_element(By.CSS_SELECTOR, ".whitespace-pre-wrap")
-    click_element(By.CSS_SELECTOR, ".disabled\\3Apointer-events-none:nth-child(2)")    
-    click_element(By.CSS_SELECTOR, ".inline-flex:nth-child(3)")
+    # Navigate
+    click_element(By.CSS_SELECTOR, ".mb-1:nth-child(1)")
+    click_element(By.CSS_SELECTOR, ".mb-1:nth-child(2)")
+    click_element(By.CSS_SELECTOR, ".mb-1:nth-child(3)")
+    click_element(By.CSS_SELECTOR, ".mb-1:nth-child(4)")
+    click_element(By.CSS_SELECTOR, ".mb-1:nth-child(5)")  
+    click_element(By.CSS_SELECTOR, ".mb-1:nth-child(6)")
+    click_element(By.CSS_SELECTOR, ".mb-1:nth-child(7)")
+    click_element(By.CSS_SELECTOR, ".mb-1:nth-child(8)")        

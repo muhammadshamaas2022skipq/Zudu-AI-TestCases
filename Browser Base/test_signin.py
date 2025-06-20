@@ -38,8 +38,4 @@ class TestSignin():
     self.driver.find_element(By.ID, "password").send_keys("admin123")
     # 10 | click | css=.inline-flex | 
     self.driver.find_element(By.CSS_SELECTOR, ".inline-flex").click()
-    # 11 | mouseOver | css=.inline-flex | 
-    element = self.driver.find_element(By.CSS_SELECTOR, ".inline-flex")
-    actions = ActionChains(self.driver)
-    actions.move_to_element(element).perform()
   

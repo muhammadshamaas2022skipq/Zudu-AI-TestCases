@@ -2,6 +2,7 @@
 import pytest
 import time
 import json
+import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -10,6 +11,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support import expected_conditions as EC
+import sounddevice as sd
+from scipy.io.wavfile import write
 
 class TestAgentspage():
   def __init__(self, driver):
@@ -47,7 +50,7 @@ class TestAgentspage():
               print(f"Element found but has zero size: {element}")
           else:
             print(f"Element found but not interactable: {element}")
-          #time.sleep(5)
+          time.sleep(5)
         except TimeoutException:
           print(f"Timeout: Element by {by} with value '{value}' not clickable after waiting.")
         except Exception as e:
@@ -62,67 +65,184 @@ class TestAgentspage():
       except Exception as e:
           print(f"Could not find or interact with input: {e}")
 
+    def Test_Agent(driver, filename):
+      # Record audio
+      duration = 3  # seconds
+      sample_rate = 44100  # Hz
+      print("Recording...")
+      audio_data = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=2, dtype='int16')
+      sd.wait()  # Wait until recording is finished
+      print("Recording finished.")
+
+      # Save the recorded audio to a file
+      output_file = filename
+      write(output_file, sample_rate, audio_data)
+      print(f"Audio saved to {output_file}")
+
+    # Navigate to Agents page
     click_element(By.CSS_SELECTOR, "li:nth-child(2) span")
+
+    # Click add agent
     click_element(By.CSS_SELECTOR, ".hover\\3A bg-primary\\/90")
+
+    # Enter name and save
     click_element(By.ID, "agent_name")
     send_keys(By.ID, "agent_name", "Test agent")
     click_element(By.CSS_SELECTOR, ".inline-flex:nth-child(2)")
+
+    time.sleep(3)
+
+    # Select language
     click_element(By.CSS_SELECTOR, ".space-y-2\\.5:nth-child(1) > .relative > .w-full")
     click_element(By.CSS_SELECTOR, ".gap-3:nth-child(1) > .text-sm")
+
+    # Test
     click_element(By.CSS_SELECTOR, ".has-\\[\\>svg\\]\\3Apx-3")
+    Test_Agent(self.driver,"agent_voice_language.wav")
     click_element(By.CSS_SELECTOR, ".inline-flex > .flex > span")
+
+    # Select voice
     click_element(By.CSS_SELECTOR, ".w-full:nth-child(2) > .relative > .w-full")
     click_element(By.CSS_SELECTOR, ".flex:nth-child(2) > .flex > .flex > .text-xs")
+    
+    # Test
     click_element(By.CSS_SELECTOR, ".has-\\[\\>svg\\]\\3Apx-3")
+    Test_Agent(self.driver,"agent_voice_voice.wav")
     click_element(By.CSS_SELECTOR, ".inline-flex > .flex > span")
+
+    # Select speed
     click_element(By.CSS_SELECTOR, ".data-\\[orientation\\=horizontal\\]\\3Ah-full")
     click_element(By.CSS_SELECTOR, ".data-\\[orientation\\=horizontal\\]\\3Ah-full")
+
+    # Test
+    click_element(By.CSS_SELECTOR, ".has-\\[\\>svg\\]\\3Apx-3")
+    Test_Agent(self.driver,"agent_voice_voice_speed.wav")
+    click_element(By.CSS_SELECTOR, ".inline-flex > .flex > span")
+
+    # First message
     click_element(By.CSS_SELECTOR, "#firstMessage")
     send_keys(By.ID, "firstMessage", "Hello. How can I help you?")
+
+    # Test
     click_element(By.CSS_SELECTOR, ".has-\\[\\>svg\\]\\3Apx-3")
+    Test_Agent(self.driver,"agent_voice_first_message.wav")
     click_element(By.CSS_SELECTOR, ".inline-flex > .flex > span")
+
+    # Add variable
     click_element(By.CSS_SELECTOR, ".w-full:nth-child(1) > .w-full > .inline-flex")
     click_element(By.CSS_SELECTOR, ".cursor-pointer:nth-child(2) > .text-xs")
+
+    # Test
     click_element(By.CSS_SELECTOR, ".has-\\[\\>svg\\]\\3Apx-3")
+    Test_Agent(self.driver,"agent_voice_first_message_variable.wav")
     click_element(By.CSS_SELECTOR, ".inline-flex > .flex > span")
+
+    # Add new variable
     click_element(By.CSS_SELECTOR, ".w-full:nth-child(1) > .w-full > .inline-flex")
     click_element(By.CSS_SELECTOR, ".italic")
+
+    # Test
     click_element(By.CSS_SELECTOR, ".has-\\[\\>svg\\]\\3Apx-3")
+    Test_Agent(self.driver,"agent_voice_first_message_new_variable.wav")
     click_element(By.CSS_SELECTOR, ".inline-flex > .flex > span")
+
+    # System prompt
     click_element(By.ID, "systemPrompt")
     send_keys(By.ID, "systemPrompt", "Thank you")
-    click_element(By.CSS_SELECTOR, ".has-\\[\\>svg\\]\\3Apx-3")
-    click_element(By.CSS_SELECTOR, ".inline-flex > .flex > span")
+
+    # Add variable
     click_element(By.CSS_SELECTOR, ".w-full:nth-child(2) > .w-full > .inline-flex")
     click_element(By.CSS_SELECTOR, ".cursor-pointer:nth-child(2) > .text-xs")
-    click_element(By.CSS_SELECTOR, ".has-\\[\\>svg\\]\\3Apx-3")
-    click_element(By.CSS_SELECTOR, ".inline-flex > .flex > span")
+
+    # Add new variable
     click_element(By.CSS_SELECTOR, ".w-full:nth-child(2) > .w-full > .inline-flex")
     click_element(By.CSS_SELECTOR, ".italic > .text-xs")
-    click_element(By.CSS_SELECTOR, ".has-\\[\\>svg\\]\\3Apx-3")
-    click_element(By.CSS_SELECTOR, ".inline-flex > .flex > span")
+
+    # New variable
     click_element(By.CSS_SELECTOR, ".file\\3Atext-foreground")
     send_keys(By.CSS_SELECTOR, ".file\\3Atext-foreground", "Test_variable")
+
+    # Toggle webhook
     click_element(By.CSS_SELECTOR, ".w-full:nth-child(2) > .flex > .peer")
     click_element(By.CSS_SELECTOR, ".inline-block > .inline-flex")
+
+    # Search knowledge base
     click_element(By.CSS_SELECTOR, ".pl-10")
     send_keys(By.CSS_SELECTOR, ".pl-10", "Test Knowledge Base")
     click_element(By.CSS_SELECTOR, ".px-4:nth-child(1) > .flex > .text-sm")
     click_element(By.CSS_SELECTOR, ".inline-block > .inline-flex")
     click_element(By.CSS_SELECTOR, ".px-3 > span")
-    click_element(By.ID, "kb-name")
+
+    # Name
     click_element(By.ID, "kb-name")
     send_keys(By.ID, "kb-name", "Test knowledge base")
+
+    # Document
+    # Upload CSV file using the file input
+    csv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "recipients-template.csv"))
+    file_input = WebDriverWait(self.driver, 10).until(
+      EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']"))
+    )
+    self.driver.execute_script("arguments[0].classList.remove('hidden');", file_input)
+    file_input.send_keys(csv_path)
+    time.sleep(2)
+
+    # Text
     click_element(By.CSS_SELECTOR, ".bg-gray-50:nth-child(2)")
     click_element(By.ID, "text-title")
     send_keys(By.ID, "text-title", "Test")
     click_element(By.ID, "text-content")
     send_keys(By.ID, "text-content", "Test content")
     click_element(By.CSS_SELECTOR, ".inline-flex:nth-child(3)")
+
+    # URL
+    click_element(By.CSS_SELECTOR, ".bg-gray-50:nth-child(3)")    
+    click_element(By.ID, "url-input")
+    send_keys(By.ID, "url-input", "https://www.abc.com")
+    click_element(By.CSS_SELECTOR, ".bg-background:nth-child(2)")
+
+    # Save
     click_element(By.CSS_SELECTOR, ".bg-black")
+
+    # Use RAG
     click_element(By.ID, "useRag")
+
+    # Click add tool button
     click_element(By.XPATH, "//div[5]/div[2]/div/div[2]/button")
+
+    # Select first tool
     click_element(By.CSS_SELECTOR, ".focus\\3A bg-accent:nth-child(1)")
     click_element(By.CSS_SELECTOR, ".bg-black")
+
+    # Delete tool
     click_element(By.CSS_SELECTOR, ".hover\\3A bg-red-50")
+
+    # Click add tool button
+    click_element(By.XPATH, "//div[5]/div[2]/div/div[2]/button")
+
+    # Select webhook tool
+    click_element(By.CSS_SELECTOR, ".focus\\3A bg-accent:nth-child(5)")
+    time.sleep(3)
+    
+    # Name
+    click_element(By.XPATH, ".//input[@placeholder='Enter Name']")
+    send_keys(By.XPATH, ".//input[@placeholder='Enter Name']","Webhook Test")
+
+    # Description
+    send_keys(By.XPATH, ".//textarea[@placeholder='Enter Description']","This is a test webhook description.")
+
+    # Method
+    click_element(By.XPATH, ".//button[@role='combobox']")
+
+    # Wait for dropdown and select "POST"
+    click_element(By.XPATH, "//div[@role='option' and (text()='POST' or .='POST')]")
+
+    # URL
+    send_keys(By.XPATH, ".//input[@placeholder='Enter URL']","https://example.com/webhook")
+
+    # Click Add tool
+    click_element(By.XPATH, ".//button[normalize-space(text())='Add tool']")
+
+    # Click save button
+    click_element(By.XPATH, "//button[normalize-space()='Save']")
   
