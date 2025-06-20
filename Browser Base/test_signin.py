@@ -27,7 +27,7 @@ class TestSignin():
     # 1 | open | /login | 
     self.driver.get("https://app.uat.zudu.ai/login")
     # 2 | setWindowSize | 602x743 | 
-    self.driver.set_window_size(602, 743)
+    #self.driver.set_window_size(602, 743)
     # 3 | click | id=email | 
     self.driver.find_element(By.ID, "email").click()
     # 7 | type | id=email | admin@example.com
