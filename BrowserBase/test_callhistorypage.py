@@ -48,7 +48,7 @@ class TestCallhistorypage():
               print(f"Element found but has zero size: {element}")
           else:
             print(f"Element found but not interactable: {element}")
-          #time.sleep(5)
+          time.sleep(5)
         except TimeoutException:
           print(f"Timeout: Element by {by} with value '{value}' not clickable after waiting.")
         except Exception as e:
