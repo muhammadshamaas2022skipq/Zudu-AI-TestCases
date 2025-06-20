@@ -4,12 +4,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 import time
-from test_signin import TestSignin
-from test_agentspage import TestAgentspage
-from test_callhistorypage import TestCallhistorypage
 from selenium.webdriver.chrome.options import Options
 from dotenv import load_dotenv
 import os
+
+from test_signin import TestSignin
+from test_agentspage import TestAgentspage
+from test_callhistorypage import TestCallhistorypage
+from test_batchcallpage import TestBatchcallpage
 
 load_dotenv()
 
@@ -32,12 +34,10 @@ conn = AuthConnection(session.selenium_remote_url, session.signing_key)
 
 # Set Chrome options
 chrome_options = Options()
-# Add any required options here, e.g., chrome_options.add_argument("--headless")
 
 # Start browser
-#driver = webdriver.Remote(command_executor=conn, options=chrome_options)
+driver = webdriver.Remote(command_executor=conn, options=chrome_options)
 
-driver = webdriver.Chrome()
 driver.set_window_size(1300, 736)
 driver.execute_script("document.body.style.zoom='0.5'")
 
@@ -56,9 +56,10 @@ test_call_history_instance = TestCallhistorypage(driver)
 test_call_history_instance.test_callhistorypage()
 time.sleep(3)
 
+# Create an instance of TestCallhistorypage and call test_signin, passing driver as an argument
+test_batch_call_instance = TestBatchcallpage(driver)
+test_batch_call_instance.test_batchcallpage()
+time.sleep(3)
+
 # Done
-print("Title after login:", driver.title)
-
-
-
 driver.quit()

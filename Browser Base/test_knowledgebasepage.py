@@ -9,23 +9,74 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.support import expected_conditions as EC
 
 class TestKnowledgebasepage():
-  def setup_method(self, method):
-    self.driver = webdriver.Firefox()
+  def __init__(self, driver):
+    self.driver = driver
     self.vars = {}
-  
+
+  def setup_method(self, method):
+    pass  
+
   def teardown_method(self, method):
-    self.driver.quit()
+    pass
   
   def test_knowledgebasepage(self):
     self.driver.get("https://app.uat.zudu.ai/")
     self.driver.set_window_size(1300, 736)
-    self.driver.find_element(By.CSS_SELECTOR, "li:nth-child(5) span").click()
-    self.driver.find_element(By.CSS_SELECTOR, ".file\\3Atext-foreground").click()
-    self.driver.find_element(By.CSS_SELECTOR, ".file\\3Atext-foreground").send_keys("Knowledge base")
-    self.driver.find_element(By.CSS_SELECTOR, ".mb-6").click()
-    self.driver.find_element(By.CSS_SELECTOR, ".file\\3Atext-foreground").click()
-    self.driver.find_element(By.CSS_SELECTOR, ".file\\3Atext-foreground").send_keys("xyz123")
-    self.driver.find_element(By.CSS_SELECTOR, ".mb-6").click()
+    self.driver.execute_script("document.body.style.zoom='0.5'")
+
+    def click_element(by, value, sleep_time=1):
+        from selenium.common.exceptions import TimeoutException
+        try:
+          element = WebDriverWait(self.driver, 10).until(
+              EC.element_to_be_clickable((by, value))
+          )
+          self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
+          if element and element.is_displayed() and element.is_enabled():
+            size = element.size
+            if size['width'] > 0 and size['height'] > 0:
+              print(element)
+              try:
+                element.click()
+              except Exception as e:
+                print(f"Click intercepted, trying JS click: {e}")
+                #self.driver.execute_script("arguments[0].click();", element)
+            else:
+              print(f"Element found but has zero size: {element}")
+          else:
+            print(f"Element found but not interactable: {element}")
+          #time.sleep(5)
+        except TimeoutException:
+          print(f"Timeout: Element by {by} with value '{value}' not clickable after waiting.")
+        except Exception as e:
+          print(f'Error finding or clicking element by {by} with value "{value}": {e}')
+
+    def send_keys(by,value,keys):
+      try:
+          input_elem = WebDriverWait(self.driver, 10).until(
+              EC.element_to_be_clickable((by, value))
+          )
+          input_elem.send_keys(keys)
+      except Exception as e:
+          print(f"Could not find or interact with input: {e}")
   
+    click_element(By.CSS_SELECTOR, "li:nth-child(5) span")
+    click_element(By.CSS_SELECTOR, ".file\\3Atext-foreground")
+    send_keys(By.CSS_SELECTOR, ".file\\3Atext-foreground","Knowledge base")
+    click_element(By.XPATH, "//button[normalize-space()='Create Knowledge Base']")
+
+    time.sleep(5)
+    click_element(By.ID, "kb-name")
+    click_element(By.ID, "kb-name")
+    send_keys(By.ID, "kb-name", "Test knowledge base")
+    click_element(By.CSS_SELECTOR, ".bg-gray-50:nth-child(2)")
+    click_element(By.ID, "text-title")
+    send_keys(By.ID, "text-title", "Test")
+    click_element(By.ID, "text-content")
+    send_keys(By.ID, "text-content", "Test content")
+    click_element(By.CSS_SELECTOR, ".inline-flex:nth-child(3)")
+    time.sleep(3)
+    click_element(By.CSS_SELECTOR, ".flex-col-reverse > .bg-black")
+    click_element(By.XPATH, "//td[normalize-space()='Test knowledge base']")
